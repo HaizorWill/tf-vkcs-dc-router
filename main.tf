@@ -6,9 +6,9 @@ resource "vkcs_dc_router" "this" {
 }
 
 resource "vkcs_dc_interface" "this" {
-  for_each = { for i in var.interfaces : i.name => i }
+  for_each = { for i in local.interfaces : i.resource_key => i }
 
-  name                 = each.value.name
+  name                 = coalesce(each.value.name, each.value.resource_key)
   description          = each.value.description
   region               = var.region
   dc_router_id         = vkcs_dc_router.this.id
