@@ -19,6 +19,7 @@ variable "name" {
 variable "interfaces" {
   type = list(object({
     name                 = optional(string)
+    resource_key         = optional(string)
     description          = optional(string)
     network_id           = optional(string)
     subnet_id            = optional(string)
@@ -39,11 +40,12 @@ variable "static_routes" {
 
 variable "routes" {
   type = list(object({
-    name        = optional(string)
-    description = optional(string)
-    network     = optional(string)
-    gateway     = optional(string)
-    metric      = optional(number)
+    name         = optional(string)
+    resource_key = optional(string)
+    description  = optional(string)
+    network      = optional(string)
+    gateway      = optional(string)
+    metric       = optional(number)
   }))
   description = "A list of static routes which are added to the router's routing table"
   default     = [{}]
