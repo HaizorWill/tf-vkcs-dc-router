@@ -1,7 +1,3 @@
-output "localroutes" {
-  value = local.interfaces
-}
-
 # output "router" {
 #   value = { for key, router in vkcs_dc_router.this : key => {
 #     id         = vkcs_dc_router.this[key].id
