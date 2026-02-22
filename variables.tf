@@ -1,13 +1,13 @@
-variable "region" {
-  type        = string
-  description = "An openstack region in which resources are created"
-  default     = null
-}
+data "vkcs_compute_availability_zones" "this" {}
 
 variable "availability_zone" {
   type        = string
   description = "An availability zone in which resources are created"
   default     = null
+  validation {
+    condition     = contains(data.vkcs_compute_availability_zones.this.names, var.availability_zone) || var.availability_zone == null
+    error_message = format("The availability zone provided does not exist! Available values are: %v", join(",", data.vkcs_compute_availability_zones.this.names))
+  }
 }
 
 variable "name" {
@@ -21,15 +21,27 @@ variable "interfaces" {
     name                 = optional(string)
     resource_key         = optional(string)
     description          = optional(string)
-    network_id           = optional(string)
+    network_id           = string
     subnet_id            = optional(string)
     ip_address           = optional(string)
     bgp_announce_enabled = optional(bool)
   }))
   description = "A list of interfaces which are connected to the advanced router"
-  default = [{
-    bgp_announce_enabled = false
-  }] # Move it to locals later?
+}
+
+variable "dnat_rules" {
+  type = list(object({
+    name            = optional(string)
+    resource_key    = optional(string)
+    description     = optional(string)
+    dc_interface_id = string
+    protocol        = string
+    to_destination  = string
+    source          = optional(string)
+    destination     = optional(string)
+    port            = optional(number)
+    to_port         = optional(number)
+  }))
 }
 
 variable "static_routes" {
@@ -43,12 +55,11 @@ variable "routes" {
     name         = optional(string)
     resource_key = optional(string)
     description  = optional(string)
-    network      = optional(string)
-    gateway      = optional(string)
+    network      = string
+    gateway      = string
     metric       = optional(number)
   }))
   description = "A list of static routes which are added to the router's routing table"
-  default     = [{}]
 }
 
 variable "bgp_enabled" {
@@ -62,18 +73,22 @@ variable "bgp_instances" {
     name                        = optional(string)
     description                 = optional(string)
     enabled                     = optional(bool)
-    bgp_router_id               = optional(string)
-    asn                         = optional(number)
+    bgp_router_id               = string
+    asn                         = number
     ecmp_enabled                = optional(bool)
     graceful_restart            = optional(bool)
     long_lived_graceful_restart = optional(bool)
   }))
   description = "A list of bgp instances that are added to the router's configuration"
-  default     = [{}]
 }
 
-# variable "bgp_neighbors" {
-#   type = list(object({
-#
-#   }))
-# }
+variable "bgp_neighbors" {
+  type = list(object({
+    name        = optional(string)
+    description = optional(string)
+    dc_bgp_id   = optional(string)
+    remote_asn  = optional(number)
+    remote_ip   = optional(string)
+  }))
+  description = "A list of BGP neighbors that are added to the BGP instance configuration"
+}
