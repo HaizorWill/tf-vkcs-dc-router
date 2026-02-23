@@ -1,12 +1,24 @@
 data "vkcs_compute_availability_zones" "this" {}
 
+data "vkcs_dc_api_options" "this" {}
+
 variable "availability_zone" {
   type        = string
   description = "An availability zone in which resources are created"
   default     = null
   validation {
     condition     = contains(data.vkcs_compute_availability_zones.this.names, var.availability_zone) || var.availability_zone == null
-    error_message = format("The availability zone provided does not exist! Available values are: %v", join(",", data.vkcs_compute_availability_zones.this.names))
+    error_message = format("The availability zone provided does not exist! Available values are: %v", join(", ", data.vkcs_compute_availability_zones.this.names))
+  }
+}
+
+variable "router_flavor" {
+  type        = string
+  description = "A flavor which is used for an advanced router"
+  default     = "standard"
+  validation {
+    condition     = contains(data.vkcs_dc_api_options.this.flavors, var.router_flavor) || var.router_flavor == null
+    error_message = format("The router flavor provided does not exist! Available value are: %v", join(", ", data.vkcs_dc_api_options.this.flavors))
   }
 }
 
@@ -42,12 +54,7 @@ variable "dnat_rules" {
     port            = optional(number)
     to_port         = optional(number)
   }))
-}
-
-variable "static_routes" {
-  type        = bool
-  description = "Controls whether static routes are created or not"
-  default     = false
+  description = "A list of port forwarding rules which are added to the router's configuration"
 }
 
 variable "routes" {
@@ -62,15 +69,10 @@ variable "routes" {
   description = "A list of static routes which are added to the router's routing table"
 }
 
-variable "bgp_enabled" {
-  type        = bool
-  description = "Controls whether BGP instances are created or not"
-  default     = false
-}
-
 variable "bgp_instances" {
   type = list(object({
     name                        = optional(string)
+    resource_key                = optional(string)
     description                 = optional(string)
     enabled                     = optional(bool)
     bgp_router_id               = string
@@ -79,16 +81,17 @@ variable "bgp_instances" {
     graceful_restart            = optional(bool)
     long_lived_graceful_restart = optional(bool)
   }))
-  description = "A list of bgp instances that are added to the router's configuration"
+  description = "A list of bgp instances which are added to the router's configuration"
 }
 
 variable "bgp_neighbors" {
   type = list(object({
-    name        = optional(string)
-    description = optional(string)
-    dc_bgp_id   = optional(string)
-    remote_asn  = optional(number)
-    remote_ip   = optional(string)
+    name         = optional(string)
+    resource_key = optional(string)
+    description  = optional(string)
+    dc_bgp_id    = string
+    remote_asn   = number
+    remote_ip    = string
   }))
   description = "A list of BGP neighbors that are added to the BGP instance configuration"
 }

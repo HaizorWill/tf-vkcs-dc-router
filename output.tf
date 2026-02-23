@@ -1,11 +1,11 @@
-# output "router" {
-#   value = { for key, router in vkcs_dc_router.this : key => {
-#     id         = vkcs_dc_router.this[key].id
-#     created_at = vkcs_dc_router.this[key].created_at
-#     updated_at = vkcs_dc_router.this[key].updated_at
-#     }
-#   }
-# }
+output "router" {
+  value = {
+    id         = vkcs_dc_router.this.id
+    name       = vkcs_dc_router.this.name
+    created_at = vkcs_dc_router.this.created_at
+    updated_at = vkcs_dc_router.this.updated_at
+  }
+}
 
 output "interfaces" {
   value = { for key, interface in vkcs_dc_interface.this : key => {
@@ -19,6 +19,14 @@ output "interfaces" {
     sdn         = vkcs_dc_interface.this[key].sdn
     created_at  = vkcs_dc_interface.this[key].created_at
     updated_at  = vkcs_dc_interface.this[key].updated_at
+    }
+  }
+}
+
+output "dnat_rules" {
+  value = { for key, rule in vkcs_dc_ip_port_forwarding.this : key => {
+    id              = vkcs_dc_ip_port_forwarding.this[key].id
+    dc_interface_id = vkcs_dc_ip_port_forwarding.this[key].dc_interface_id
     }
   }
 }

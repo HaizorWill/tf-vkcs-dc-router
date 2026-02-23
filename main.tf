@@ -1,7 +1,7 @@
 resource "vkcs_dc_router" "this" {
   name              = var.name
   availability_zone = var.availability_zone
-  flavor            = "standard" # This is hard coded, since there are no other options at the moment
+  flavor            = var.router_flavor
 }
 
 resource "vkcs_dc_interface" "this" {
@@ -35,7 +35,7 @@ resource "vkcs_dc_ip_port_forwarding" "this" {
 }
 
 resource "vkcs_dc_static_route" "this" {
-  for_each = { for r in local.routes : r.name => r if var.static_routes }
+  for_each = local.routes
 
   name         = each.value.name
   description  = each.value.description
@@ -48,7 +48,7 @@ resource "vkcs_dc_static_route" "this" {
 }
 
 resource "vkcs_dc_bgp_instance" "this" {
-  for_each = { for i in var.bgp_instances : i.name => i if var.bgp_enabled }
+  for_each = local.bgp_instances
 
   name                        = each.value.name
   description                 = each.value.description

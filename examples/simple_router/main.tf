@@ -21,7 +21,6 @@ module "dc-router-1" {
   source            = "github.com/HaizorWill/tf-vkcs-dc-router"
   name              = "dc-router-1"
   availability_zone = "PA2"
-  static_routes     = false
   interfaces = [{
     name                 = "WAN"
     network_id           = data.vkcs_networking_network.extnet.id
@@ -41,7 +40,6 @@ module "dc-router-1" {
     port            = 2222
     to_port         = 22
   }]
-  bgp_enabled = true
   bgp_instances = [{
     name          = "bgp-instance"
     bgp_router_id = module.dc-router-1.interfaces.LAN.ip_address
