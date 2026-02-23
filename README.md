@@ -23,7 +23,7 @@ Currently, it supports creating:
 
  * It does not create networks or subnets; they must be created beforehand and passed to the module
  * It does not manage multiple advanced routers or VRRP domains
- * It is not an opinionated declarative module. Instead, it is composable - you explicitly define objects tobe created, allowing for maximum flexibility
+ * It is not an opinionated declarative module. Instead, it is composable - you explicitly define objects to be created, allowing for maximum flexibility
 
 ## Inputs
 
