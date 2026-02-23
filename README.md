@@ -6,7 +6,7 @@ Terraform module that creates an advanced Sprut router in VK Cloud.
 
 It aims to provide a flexible and simplified way to create advanced routers in VK Public Cloud.
 
-    > It may also work with VK Private Cloud, as it is not tightly coupled to Public Cloud only. However, it has not been tested with Private Cloud and it is not planned to be in a foreseable future.
+> It may also work with VK Private Cloud, as it is not tightly coupled to Public Cloud only. However, it has not been tested with Private Cloud and it is not planned to be in a foreseable future.
 
 ## Features
 
