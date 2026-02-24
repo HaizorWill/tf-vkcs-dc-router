@@ -18,7 +18,7 @@ resource "vkcs_networking_subnet" "subnet-1" {
 }
 
 module "dc-router-1" {
-  source            = "github.com/HaizorWill/tf-vkcs-dc-router"
+  source            = "github.com/HaizorWill/terraform-vkcs-dc-router"
   name              = "dc-router-1"
   availability_zone = "PA2"
   interfaces = [{
