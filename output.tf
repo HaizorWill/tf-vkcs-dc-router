@@ -1,9 +1,10 @@
 output "router" {
   value = {
-    id         = vkcs_dc_router.this.id
-    name       = vkcs_dc_router.this.name
-    created_at = vkcs_dc_router.this.created_at
-    updated_at = vkcs_dc_router.this.updated_at
+    id                = vkcs_dc_router.this.id
+    name              = vkcs_dc_router.this.name
+    availability_zone = vkcs_dc_router.this.availability_zone
+    created_at        = vkcs_dc_router.this.created_at
+    updated_at        = vkcs_dc_router.this.updated_at
   }
 }
 
@@ -26,7 +27,16 @@ output "interfaces" {
 output "dnat_rules" {
   value = { for key, rule in vkcs_dc_ip_port_forwarding.this : key => {
     id              = vkcs_dc_ip_port_forwarding.this[key].id
+    name            = vkcs_dc_ip_port_forwarding.this[key].name
     dc_interface_id = vkcs_dc_ip_port_forwarding.this[key].dc_interface_id
+    protocol        = vkcs_dc_ip_port_forwarding.this[key].protocol
+    to_destination  = vkcs_dc_ip_port_forwarding.this[key].to_destination
+    source          = vkcs_dc_ip_port_forwarding.this[key].source
+    destination     = vkcs_dc_ip_port_forwarding.this[key].destination
+    port            = vkcs_dc_ip_port_forwarding.this[key].port
+    to_port         = vkcs_dc_ip_port_forwarding.this[key].to_port
+    created_at      = vkcs_dc_ip_port_forwarding.this[key].created_at
+    updated_at      = vkcs_dc_ip_port_forwarding.this[key].updated_at
     }
   }
 }
