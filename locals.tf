@@ -5,7 +5,7 @@ locals {
       bgp_announce_enabled = interface.bgp_announce_enabled != null ? interface.bgp_announce_enabled : false
     })
   } : {}
-  dnat_rules = var.interfaces != null ? {
+  dnat_rules = var.dnat_rules != null ? {
     for id, rule in var.dnat_rules :
     coalesce(rule.resource_key, format("dnat-rule-%s", id)) => merge(rule, {
       to_port = rule.port != null && rule.to_port == null ? rule.port : rule.to_port
