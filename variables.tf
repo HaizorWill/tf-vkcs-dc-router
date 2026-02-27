@@ -39,6 +39,7 @@ variable "interfaces" {
     bgp_announce_enabled = optional(bool)
   }))
   description = "A list of interfaces which are connected to the advanced router"
+  default     = null
 }
 
 variable "dnat_rules" {
@@ -55,6 +56,7 @@ variable "dnat_rules" {
     to_port         = optional(number)
   }))
   description = "A list of port forwarding rules which are added to the router's configuration"
+  default     = null
 }
 
 variable "routes" {
@@ -67,6 +69,7 @@ variable "routes" {
     metric       = optional(number)
   }))
   description = "A list of static routes which are added to the router's routing table"
+  default     = null
 }
 
 variable "bgp_instances" {
@@ -82,6 +85,7 @@ variable "bgp_instances" {
     long_lived_graceful_restart = optional(bool)
   }))
   description = "A list of bgp instances which are added to the router's configuration"
+  default     = null
 }
 
 variable "bgp_neighbors" {
@@ -94,4 +98,5 @@ variable "bgp_neighbors" {
     remote_ip    = string
   }))
   description = "A list of BGP neighbors that are added to the BGP instance configuration"
+  default     = null
 }
